@@ -1,0 +1,102 @@
+{
+  "employees": [
+    {
+      "code": "E001",
+      "name": "Alice Johnson",
+      "category": "IT",
+      "quantity": 12,
+      "status": true,
+      "id": "bafd"
+    },
+    {
+      "code": "E002",
+      "name": "Bob Smith",
+      "category": "HR",
+      "quantity": 5,
+      "status": false,
+      "id": "70c6"
+    },
+    {
+      "code": "E003",
+      "name": "Charlie Brown",
+      "category": "Finance",
+      "quantity": 8,
+      "status": true,
+      "id": "1fe1"
+    },
+    {
+      "code": "E004",
+      "name": "Diana Prince",
+      "category": "IT",
+      "quantity": 15,
+      "status": true,
+      "id": "8674"
+    },
+    {
+      "id": "bd4b",
+      "code": null,
+      "name": "IGD-CP-STG-001",
+      "category": "IT",
+      "quantity": 2,
+      "status": true
+    },
+    {
+      "id": "a136",
+      "code": null,
+      "name": "IGD-CP-STG-001",
+      "category": "HR",
+      "quantity": 189,
+      "status": true
+    }
+  ],
+  "products": [
+    {
+      "id": "vJlWa",
+      "code": "CPIGD001",
+      "name": "Bath Towel ITLN",
+      "price": 22,
+      "category": "Home Goods",
+      "status": "LOWSTOCK"
+    },
+    {
+      "id": "P5IG2",
+      "code": "IGTN",
+      "name": "IGD-LP-STG-02",
+      "price": 66,
+      "category": "Accessories",
+      "status": "OUTOFSTOCK"
+    },
+    {
+      "id": "VE4vT",
+      "code": "CPIGD0012",
+      "name": "Bath Towel ITLN Post",
+      "price": 4,
+      "category": "Electronics",
+      "status": "INSTOCK"
+    },
+    {
+      "id": "pPS1F",
+      "code": "IGTN",
+      "name": "IG Testing NON-RFID",
+      "price": 7,
+      "category": "Accessories",
+      "status": "LOWSTOCK"
+    },
+    {
+      "id": "tLJul",
+      "code": "2342",
+      "name": "Post ",
+      "price": 4,
+      "category": "Electronics",
+      "status": "OUTOFSTOCK"
+    },
+    {
+      "id": "UnAJN",
+      "code": "IGTN 124",
+      "name": "IGD-CP-STG-001d",
+      "price": 44,
+      "category": "Fitness",
+      "status": "INSTOCK"
+    }
+  ]
+}

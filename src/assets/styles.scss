@@ -3,3 +3,60 @@
 @use './layout/layout.scss';
 @use 'primeicons/primeicons.css';
 @use './demo/demo.scss';
+
+/* Custom Styles for Ghost Action Buttons */
+
+/* Common styles for the action buttons */
+.tailwind-edit-btn,
+.tailwind-delete-btn {
+    /* Override PrimeNG focus/hover border (optional, based on global theme) */
+    outline: none !important;
+    box-shadow: none !important;
+    /* Make the button size consistent */
+    width: 2rem;
+    height: 2rem;
+    padding: 0 !important;
+    /* Add a light border to match the design (e.g., gray) */
+    border: 1px solid #e5e7eb; /* Tailwind's border-gray-200 */
+}
+
+/* Edit Button (Green) */
+.tailwind-edit-btn .p-button-icon {
+    color: #10B981; /* Tailwind's emerald-500 (or green-500) for the icon */
+}
+
+/* Delete Button (Red) */
+.tailwind-delete-btn .p-button-icon {
+    color: #EF4444; /* Tailwind's red-500 for the icon */
+}
+
+/* Status Tag Styling (from previous step, included for completeness) */
+.status-tag {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px; /* Tailwind's rounded-full */
+    font-weight: 600; /* Tailwind's font-semibold */
+    color: white;
+    font-size: 0.75rem; /* Tailwind's text-xs */
+    text-transform: uppercase;
+}
+
+.status-active {
+    background-color: #10B981; /* Tailwind's emerald-500 */
+}
+
+.status-inactive {
+    background-color: #EF4444; /* Tailwind's red-500 */
+}
+
+/* Optional: Improve table layout/padding to match the clean design */
+.p-datatable .p-datatable-tbody > tr > td {
+    padding: 1rem 1rem !important;
+}
+.p-error {
+    color: #e24c4c;
+}
+.custom-contrast-tag {
+    background-color: #BF90E3;
+    color: white;
+}

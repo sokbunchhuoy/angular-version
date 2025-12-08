@@ -33,7 +33,7 @@ import { LayoutService } from '../service/layout.service';
                         />
                     </g>
                 </svg>
-                <span>SAKAI</span>
+                <span>bunchhuoy</span>
             </a>
         </div>
 
@@ -57,7 +57,6 @@ import { LayoutService } from '../service/layout.service';
                     <app-configurator />
                 </div>
             </div>
-
             <button class="layout-topbar-menu-button layout-topbar-action" pStyleClass="@next" enterFromClass="hidden" enterActiveClass="animate-scalein" leaveToClass="hidden" leaveActiveClass="animate-fadeout" [hideOnOutsideClick]="true">
                 <i class="pi pi-ellipsis-v"></i>
             </button>
@@ -72,10 +71,41 @@ import { LayoutService } from '../service/layout.service';
                         <i class="pi pi-inbox"></i>
                         <span>Messages</span>
                     </button>
-                    <button type="button" class="layout-topbar-action">
-                        <i class="pi pi-user"></i>
-                        <span>Profile</span>
-                    </button>
+                </div>
+            </div>
+            <div class="relative">
+                <button
+                    class="layout-topbar-action"
+                    pStyleClass="@next"
+                    enterFromClass="hidden"
+                    enterActiveClass="animate-scalein"
+                    leaveToClass="hidden"
+                    leaveActiveClass="animate-fadeout"
+                    [hideOnOutsideClick]="true"
+                >
+                    <i class="pi pi-user"></i>
+                </button>
+                <div class="profile-dropdown-menu bg-gray-200 surface-overlay border-round shadow-2 p-3 absolute right-0 mt-2 hidden" style="width: 200px">
+                    <ul class="list-none p-0 m-0">
+                        <li class="p-3 hover:surface-100 border-round cursor-pointer">
+                            <a routerLink="/profile" class="flex align-items-center no-underline">
+                                <i class="pi pi-user mr-2"></i>
+                                <span>Profile</span>
+                            </a>
+                        </li>
+                        <li class="p-3 hover:surface-100 border-round cursor-pointer">
+                            <a routerLink="/personalize" class="flex align-items-center no-underline">
+                                <i class="pi pi-palette mr-2"></i>
+                                <span>Switch Language</span>
+                            </a>
+                        </li>
+                        <li class="p-3 hover:surface-100 border-round cursor-pointer">
+                            <a class="flex align-items-center no-underline">
+                                <i class="pi pi-power-off mr-2"></i>
+                                <span>Sign Out</span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
