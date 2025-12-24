@@ -55,48 +55,96 @@
       "code": "CPIGD001",
       "name": "Bath Towel ITLN",
       "price": 22,
-      "category": "Home Goods",
-      "status": "LOWSTOCK"
+      "category": "Accessories",
+      "status": "OUTOFSTOCK",
+      "merchant": {
+        "id": "10",
+        "merchantId": "900019221",
+        "merchantName": "Tube Coffee"
+      },
+      "dStatus": 0
     },
     {
       "id": "P5IG2",
       "code": "IGTN",
       "name": "IGD-LP-STG-02",
       "price": 66,
-      "category": "Accessories",
-      "status": "OUTOFSTOCK"
+      "category": "Clothing",
+      "status": "OUTOFSTOCK",
+      "merchant": null,
+      "dStatus": 0
     },
     {
       "id": "VE4vT",
       "code": "CPIGD0012",
       "name": "Bath Towel ITLN Post",
       "price": 4,
-      "category": "Electronics",
-      "status": "INSTOCK"
+      "category": "Home Goods",
+      "status": "INSTOCK",
+      "merchant": null,
+      "dStatus": null
     },
     {
       "id": "pPS1F",
       "code": "IGTN",
       "name": "IG Testing NON-RFID",
       "price": 7,
-      "category": "Accessories",
-      "status": "LOWSTOCK"
+      "category": "Fitness",
+      "status": "LOWSTOCK",
+      "merchant": null,
+      "dStatus": null
     },
     {
       "id": "tLJul",
       "code": "2342",
       "name": "Post ",
       "price": 4,
-      "category": "Electronics",
-      "status": "OUTOFSTOCK"
+      "category": "Home Goods",
+      "status": "OUTOFSTOCK",
+      "merchant": null,
+      "dStatus": null
     },
     {
       "id": "UnAJN",
       "code": "IGTN 124",
       "name": "IGD-CP-STG-001d",
       "price": 44,
-      "category": "Fitness",
-      "status": "INSTOCK"
+      "category": "Accessories",
+      "status": "INSTOCK",
+      "merchant": "",
+      "dStatus": 0
+    },
+    {
+      "id": "oPbR2",
+      "code": "CPIGD002",
+      "name": "IGD-CP-STG-001",
+      "price": 33,
+      "category": "Accessories",
+      "status": "LOWSTOCK",
+      "merchant": null,
+      "dStatus": 1
+    },
+    {
+      "id": "Uuelz",
+      "code": "CPIGD001",
+      "name": "IGD-LP-STG-02",
+      "price": 88,
+      "category": "Accessories",
+      "status": null,
+      "merchant": null,
+      "dStatus": 0
+    }
+  ],
+  "merchant": [
+    {
+      "id": "10",
+      "merchantId": "900019221",
+      "merchantName": "Tube Coffee"
+    },
+    {
+      "id": "1",
+      "merchantId": "9000981",
+      "merchantName": "IG Merchant"
     }
   ]
 }

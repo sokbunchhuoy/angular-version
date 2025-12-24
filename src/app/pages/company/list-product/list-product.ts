@@ -1,8 +1,8 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { ListProductService, Product } from '@/pages/company/list-product';
+import { ListProductService, Merchant, MerchantOption, Product } from '@/pages/company/list-product';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Button } from 'primeng/button';
-import { ConfirmDialog } from 'primeng/confirmdialog';
+import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
 import { Dialog } from 'primeng/dialog';
 import { InputNumber } from 'primeng/inputnumber';
 import { InputText } from 'primeng/inputtext';
@@ -14,22 +14,31 @@ import { CurrencyPipe } from '@angular/common';
 import { RadioButton } from 'primeng/radiobutton';
 import { Select } from 'primeng/select';
 import { Tag } from 'primeng/tag';
+import { finalize } from 'rxjs';
+import { ProgressBar } from 'primeng/progressbar';
+import { Badge } from 'primeng/badge';
+import { Constant } from '@/constant/constant';
 
 @Component({
     selector: 'app-list-product',
-    imports: [Button, ConfirmDialog, Dialog, InputNumber, InputText, PrimeTemplate, ReactiveFormsModule, TableModule, Toast, Toolbar, CurrencyPipe, RadioButton, Select, Tag],
+    imports: [Button, ConfirmDialog, Dialog, InputNumber, InputText, PrimeTemplate, ReactiveFormsModule, TableModule, Toast, Toolbar, CurrencyPipe, RadioButton, Select, Tag, ConfirmDialogModule, ProgressBar, Badge],
     templateUrl: './list-product.html',
     styleUrl: './list-product.scss',
     providers: [MessageService, ConfirmationService]
 })
 export class ListProduct implements OnInit {
-    rows: number = 5;
+
+    getCategorySeverity(category: string) {
+        return Constant.getCategorySeverity(category);
+    }
+
+    rows: number = 10;
     rowsPerPageOptions: number[] = [5, 10, 20];
     products = signal<Product[]>([]);
     productDialog: boolean = false; // State for showing/hiding the dialog
     form!: FormGroup;
     selectedProduct!: Product | null;
-
+    loading = signal(false);
     categories = [
         { label: 'Accessories', value: 'Accessories' },
         { label: 'Clothing', value: 'Clothing' },
@@ -43,6 +52,9 @@ export class ListProduct implements OnInit {
         { label: 'Low Stock', value: 'LOWSTOCK' },
         { label: 'Out of Stock', value: 'OUTOFSTOCK' }
     ];
+
+    merchantOptions: MerchantOption[] = [];
+
     constructor(
         private fb: FormBuilder,
         private productService: ListProductService,
@@ -53,6 +65,7 @@ export class ListProduct implements OnInit {
     ngOnInit(): void {
         this.initForm();
         this.loadProducts();
+        this.loadMerchants();
     }
 
     getSeverity(status: string) {
@@ -66,6 +79,15 @@ export class ListProduct implements OnInit {
             default:
                 return 'info';
         }
+    }
+
+    loadMerchants(): void {
+        this.productService.getMerchants().subscribe((data: Merchant[]) => {
+            this.merchantOptions = data.map((merchant) => ({
+                label: `${merchant.merchantId} - ${merchant.merchantName}`,
+                value: merchant
+            }));
+        });
     }
 
     // --- Helper Functions (Provided in the prompt) ---
@@ -100,7 +122,75 @@ export class ListProduct implements OnInit {
             name: ['', Validators.required],
             price: [0, [Validators.required, Validators.min(0)]],
             category: ['', Validators.required],
-            status: ['', Validators.required]
+            status: ['', Validators.required],
+            merchant: ['', Validators.required],
+            dStatus: [null]
+        });
+    }
+
+    confirmApprove(): void {
+        this.confirmationService.confirm({
+            key: 'approve',
+            message: 'Approve this product?',
+            header: 'Confirmation',
+            icon: 'pi pi-check-circle',
+            acceptLabel: 'Yes',
+            rejectLabel: 'No',
+
+            accept: () => {
+                // ✅ show fields ONLY after Yes
+                this.form.get('dStatus')?.setValue(1);
+
+                // ✅ make them required only for approval
+                this.form.get('status')?.setValidators([Validators.required]);
+                this.form.get('merchant')?.setValidators([Validators.required]);
+                this.form.get('status')?.updateValueAndValidity();
+                this.form.get('merchant')?.updateValueAndValidity();
+
+                this.msgService.add({ severity: 'success', summary: 'Approved', detail: 'Product approved successfully.' });
+            },
+
+            reject: () => {
+                // ✅ keep them hidden/optional if No
+                this.form.get('dStatus')?.setValue(null);
+                this.form.get('status')?.clearValidators();
+                this.form.get('merchant')?.clearValidators();
+                this.form.get('status')?.updateValueAndValidity();
+                this.form.get('merchant')?.updateValueAndValidity();
+
+                this.msgService.add({ severity: 'info', summary: 'Cancelled', detail: 'Approval cancelled.' });
+            }
+        });
+    }
+
+    // ✅ REJECT with Yes/No + messages
+    confirmReject(): void {
+        this.confirmationService.confirm({
+            key: 'reject',
+            message: 'Reject this product?',
+            header: 'Confirmation',
+            icon: 'pi pi-times-circle',
+            acceptLabel: 'Yes',
+            rejectLabel: 'No',
+
+            accept: () => {
+                this.form.get('dStatus')?.setValue(0);
+
+                // optional: clear validators if those fields should not be required on reject
+                this.form.get('status')?.clearValidators();
+                this.form.get('merchant')?.clearValidators();
+                this.form.get('status')?.updateValueAndValidity();
+                this.form.get('merchant')?.updateValueAndValidity();
+
+                // If reject should persist, call saveProduct()
+                // this.saveProduct();
+
+                this.msgService.add({ severity: 'success', summary: 'Rejected', detail: 'Product rejected successfully.' });
+            },
+
+            reject: () => {
+                this.msgService.add({ severity: 'info', summary: 'Cancelled', detail: 'Rejection cancelled.' });
+            }
         });
     }
 
@@ -122,14 +212,6 @@ export class ListProduct implements OnInit {
         this.productDialog = false;
         this.form.reset();
         this.selectedProduct = null;
-    }
-
-    // --- CRUD Operations ---
-
-    loadProducts(): void {
-        this.productService.getProducts().subscribe((data) => {
-            this.products.set(data);
-        });
     }
 
     // CREATE / UPDATE
@@ -173,22 +255,55 @@ export class ListProduct implements OnInit {
         this.confirmDelete(product);
     }
 
-    // Confirmation dialog logic
+    loadProducts(): void {
+        this.loading.set(true);
+
+        // Delay the start of the request by 1 second
+        setTimeout(() => {
+            this.productService
+                .getProducts()
+                .pipe(finalize(() => this.loading.set(false)))
+                .subscribe({
+                    next: (data: any) => this.products.set(data),
+                    error: () => {
+                        this.msgService.add({
+                            severity: 'error',
+                            summary: 'Error',
+                            detail: 'Failed to load products'
+                        });
+                    }
+                });
+        }, 1000); // 1000ms delay
+    }
+
+    // ✅ DELETE with Yes/No + messages + loading
     confirmDelete(product: Product): void {
         this.confirmationService.confirm({
-            message: 'Are you sure you want to delete this record ' + product.name + '?',
+            key: 'delete',
+            message: `Are you sure you want to delete "${product.name}"?`,
             header: 'Confirmation',
             icon: 'pi pi-exclamation-triangle',
-            key: 'delete', // If using multiple ConfirmDialogs, use a key
-            accept: () => {
-                // If user accepts, proceed with deletion
-                this.productService.deleteProduct(product.id).subscribe(() => {
-                    // Update signal logic
-                    this.products.update((currentProducts) => currentProducts.filter((p) => p.id !== product.id));
+            acceptLabel: 'Yes',
+            rejectLabel: 'No',
 
-                    // Success message for Delete
-                    this.msgService.add({ severity: 'success', summary: 'Deleted', detail: 'Record was deleted successfully.' });
-                });
+            accept: () => {
+                this.loading.set(true);
+                this.productService
+                    .deleteProduct(product.id)
+                    .pipe(finalize(() => this.loading.set(false)))
+                    .subscribe({
+                        next: () => {
+                            this.products.update((list) => list.filter((p) => p.id !== product.id));
+                            this.msgService.add({ severity: 'success', summary: 'Deleted', detail: 'Record was deleted successfully.' });
+                        },
+                        error: () => {
+                            this.msgService.add({ severity: 'error', summary: 'Error', detail: 'Delete failed.' });
+                        }
+                    });
+            },
+
+            reject: () => {
+                this.msgService.add({ severity: 'info', summary: 'Cancelled', detail: 'Delete cancelled.' });
             }
         });
     }

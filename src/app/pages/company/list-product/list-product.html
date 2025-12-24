@@ -1,17 +1,24 @@
 <p-toast></p-toast>
 
 <p-confirmdialog key="delete"></p-confirmdialog>
+<p-confirmdialog key="approve"></p-confirmdialog>
+<p-confirmdialog key="reject"></p-confirmdialog>
 
 <p-toolbar styleClass="mb-6">
     <ng-template pTemplate="start">
-        <p-button label="New" icon="pi pi-plus" severity="secondary" styleClass="mr-2" (click)="openNew()"/>
+        <p-button label="New" icon="pi pi-plus" severity="secondary" styleClass="mr-2" (click)="openNew()" />
     </ng-template>
 
     <ng-template pTemplate="end">
-        <p-button label="Export" icon="pi pi-upload" severity="secondary" />
+        <p-button label="Refresh" icon="pi pi-refresh" (click)="loadProducts()" severity="secondary" />
     </ng-template>
 </p-toolbar>
 <div class="card">
+    <div class="list-progress" style="height: 3px">
+        @if (loading()) {
+            <p-progressBar mode="indeterminate" [style]="{'height': '3px'}"></p-progressBar>
+        }
+    </div>
     <p-table
         [value]="products()" [tableStyle]="{ 'min-width': '50rem' }"
         [paginator]="true"
@@ -35,7 +42,14 @@
                 <td>{{ i + 1 }}</td>
                 <td>{{ product.code }}</td>
                 <td>{{ product.name }}</td>
-                <td>{{product.category}}</td>
+                <td>
+                    <p-badge
+                        [severity]="getCategorySeverity(product.category)"
+                        styleClass="mr-2 vertical-align-middle"
+                        [style]="{ 'width': '10px', 'height': '10px', 'min-width': '10px' }">
+                    </p-badge>
+                    {{ product.category }}
+                </td>
                 <td>{{ product.price | currency }}</td>
                 <td>
                     <p-tag [value]="product.status" [severity]="getSeverity(product.status)"></p-tag>
@@ -44,14 +58,25 @@
                     <p-button
                         icon="pi pi-pencil"
                         styleClass="p-button-rounded p-button-text p-button-sm mr-2 tailwind-edit-btn"
-                        (click)="editProduct(product)"> </p-button>
+                        (click)="editProduct(product)"></p-button>
 
                     <p-button
                         icon="pi pi-trash"
                         styleClass="p-button-rounded p-button-text p-button-sm tailwind-delete-btn"
-                        (click)="deleteProduct(product)"> </p-button>
+                        (click)="deleteProduct(product)"></p-button>
                 </td>
 
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="100%" class="text-center">
+                    @if (loading()) {
+                        <span>Loading data...</span>
+                    } @else {
+                        <span>No record available.</span>
+                    }
+                </td>
             </tr>
         </ng-template>
     </p-table>
@@ -108,41 +133,60 @@
                                    mode="currency"
                                    currency="USD"
                                    locale="en-US"
-                                   [min]="0"> </p-inputNumber>
+                                   [min]="0"></p-inputNumber>
                     @if (form.get('price')!.invalid && (form.get('price')!.dirty || form.get('price')!.touched)) {
                         <small class="p-error">Price is required and must be at least 0.</small>
                     }
                 </div>
-                <div class="flex flex-col gap-2">
-                    <label for="status">Status</label>
-                    <p-select
-                        id="status"
-                        [options]="statuses"
-                        formControlName="status"
-                        optionLabel="label"
-                        optionValue="value"
-                        placeholder="Select Status"
-                        [filter]="false" appendTo="body">
-                    </p-select>
-                    @if (form.get('status')?.invalid && form.get('status')?.touched) {
-                        <small class="p-error">Status is required.</small>
-                    }
-                </div>
-                <div class="flex flex-col gap-2">
+                @if (form.get('dStatus')?.value === 1) {
+                    <div class="flex flex-col gap-2">
+                        <label for="status">Status</label>
+                        <p-select
+                            id="status"
+                            [options]="statuses"
+                            formControlName="status"
+                            optionLabel="label"
+                            optionValue="value"
+                            placeholder="Select Status"
+                            appendTo="body">
+                        </p-select>
+                        @if (form.get('status')?.invalid && form.get('status')?.touched) {
+                            <small class="p-error">Status is required for approval.</small>
+                        }
+                    </div>
 
-                </div>
+                    <div class="flex flex-col gap-2">
+                        <label for="merchant">Merchant</label>
+                        <p-select
+                            id="merchant"
+                            [options]="merchantOptions"
+                            formControlName="merchant"
+                            optionLabel="label"
+                            optionValue="value"
+                            placeholder="Select Merchant"
+                            [filter]="true"
+                            appendTo="body">
+                        </p-select>
+                        @if (form.get('merchant')?.invalid && form.get('merchant')?.touched) {
+                            <small class="p-error">Merchant is required for approval.</small>
+                        }
+                    </div>
+                }
             </div>
         </form>
     </ng-template>
 
     <!-- FOOTER (optional, use click instead of submit) -->
     <ng-template pTemplate="footer">
-        <p-button label="Cancel" icon="pi pi-times" severity="secondary"
-                  (click)="hideDialog()"></p-button>
-        <p-button label="Save" icon="pi pi-check"
-                  (click)="saveProduct()"
-                  [disabled]="form.invalid"></p-button>
-        <p-tag severity="contrast" value="Contrast" [rounded]="true"
-               styleClass="custom-contrast-tag" > </p-tag>
+        <p-button label="Cancel" icon="pi pi-times" severity="secondary" (click)="hideDialog()"></p-button>
+
+        <p-button label="Save" icon="pi pi-check" (click)="saveProduct()"
+                  [disabled]="form.invalid || loading()"></p-button>
+
+        <p-button label="Approved" icon="pi pi-sync" severity="info" (click)="confirmApprove()"
+                  [disabled]="loading()"></p-button>
+
+        <p-button label="Reject" severity="warn" (click)="confirmReject()" [disabled]="loading()"></p-button>
     </ng-template>
+
 </p-dialog>

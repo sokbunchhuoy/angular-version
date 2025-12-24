@@ -9,8 +9,20 @@ export interface Product {
     price: number;
     category: string;
     status: string;
+    merchant: Merchant;
 }
 
+export interface Merchant {
+    id: number;
+    merchantId: string;
+    merchantName: string;
+}
+
+
+export interface MerchantOption {
+    label: string;
+    value: Merchant;
+}
 @Injectable({
     providedIn: 'root'
 })
@@ -33,5 +45,11 @@ export class ListProductService {
 
     deleteProduct(id: string): Observable<any> {
         return this.http.delete(`${this.apiUrl}/${id}`);
+    }
+// --- Simplified Service for JSON-Server ---
+    getMerchants(): Observable<Merchant[]> {
+        const MERCHANT_API_URL = 'http://localhost:3000/merchant';
+        // Expect the array directly
+        return this.http.get<Merchant[]>(MERCHANT_API_URL);
     }
 }
