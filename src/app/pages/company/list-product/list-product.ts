@@ -21,7 +21,7 @@ import { Constant } from '@/constant/constant';
 
 @Component({
     selector: 'app-list-product',
-    imports: [Button, ConfirmDialog, Dialog, InputNumber, InputText, PrimeTemplate, ReactiveFormsModule, TableModule, Toast, Toolbar, CurrencyPipe, RadioButton, Select, Tag, ConfirmDialogModule, ProgressBar, Badge],
+    imports: [Button, ConfirmDialog, Dialog, InputNumber, InputText, PrimeTemplate, ReactiveFormsModule, TableModule, Toast, Toolbar, CurrencyPipe, RadioButton, Select, Tag, ConfirmDialogModule, Badge],
     templateUrl: './list-product.html',
     styleUrl: './list-product.scss',
     providers: [MessageService, ConfirmationService]

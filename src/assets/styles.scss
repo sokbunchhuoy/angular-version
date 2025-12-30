@@ -63,3 +63,13 @@
 .text-center {
     text-align: center !important;
 }
+/**
+Required field
+*/
+.required {
+    color: #cc0000;
+
+    &:after {
+        content: "*";
+    }
+}

@@ -1,0 +1,116 @@
+<p-toast></p-toast>
+<div class="flex flex-col gap-8 w-full" [formGroup]="form">
+    <div class="w-full">
+        <div class="card flex flex-col gap-4">
+            <div class="flex justify-between items-center">
+                <div class="font-semibold text-xl">Terminal</div>
+                <div class="flex gap-2">
+                    <p-button label="Back to list" icon="pi pi-arrow-left" routerLink="/terminal/list" severity="secondary"></p-button>
+                    <p-button label="Save" icon="pi pi-save" (onClick)="onSave()"></p-button>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-6">
+                <div class="flex flex-col grow basis-0 gap-2">
+                    <label for="serialNumber" class="font-medium">Serial Number <span class="required"></span></label>
+                    <input pInputText id="serialNumber" placeholder="Serial Number..." type="text" formControlName="serialNumber" class="w-full" />
+                    @if (form.get('serialNumber')?.invalid && form.get('serialNumber')?.touched) {
+                        <small class="p-error">Field is required.</small>
+                    }
+                </div>
+                <div class="flex flex-col grow basis-0 gap-2">
+                    <label for="model" class="font-medium">Model <span class="required"></span></label>
+                    <input pInputText id="model" type="text" placeholder="Model..." formControlName="model" class="w-full" />
+                    @if (form.get('model')?.invalid && form.get('model')?.touched) {
+                        <small class="p-error">Field is required.</small>
+                    }
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-6">
+                <div class="flex flex-col grow basis-0 gap-2">
+                    <label for="name" class="font-medium">Terminal Name <span class="required"></span></label>
+                    <input pInputText id="name" type="text" placeholder="Terminal Name..." formControlName="name" class="w-full" />
+                    @if (form.get('name')?.invalid && form.get('name')?.touched) {
+                        <small class="p-error">Field is required.</small>
+                    }
+                </div>
+                <div class="flex flex-col grow basis-0 gap-2">
+                    <label for="type" class="font-medium">Type <span class="required"></span></label>
+                    <input pInputText id="type" type="text" placeholder="Type..." formControlName="type" class="w-full" />
+                    @if (form.get('type')?.invalid && form.get('type')?.touched) {
+                        <small class="p-error">Field is required.</small>
+                    }
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-6">
+                <div class="flex flex-col grow basis-0 gap-2">
+                    <label for="status" class="mr-2">Status:</label>
+                    <div class="flex items-center">
+                        <p-checkbox id="status" formControlName="status" [binary]="true" inputId="status"></p-checkbox>
+                        <label class="ml-2"> {{ form.get('status')?.value ? 'Active' : 'Inactive' }}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card flex flex-col gap-4 mt-4">
+            <p-fieldset legend="Store" [toggleable]="true" formArrayName="store">
+                <div *ngFor="let storeForm of stores.controls; let i = index" [formGroupName]="i" class="flex flex-wrap gap-4 items-end mb-4">
+                    <div class="flex flex-col grow basis-0 gap-2">
+                        <label *ngIf="i === 0" [for]="'storeCode' + i" class="font-medium">Store Code <span class="required"></span></label>
+                        <input [id]="'storeCode' + i" pInputText type="text" formControlName="storeCode" placeholder="Store Code..." class="w-full" />
+
+                        @if (storeForm.get('storeCode')?.invalid && storeForm.get('storeCode')?.touched) {
+                            <small class="p-error">Field is required.</small>
+                        }
+                    </div>
+
+                    <div class="flex flex-col grow basis-0 gap-2">
+                        <label *ngIf="i === 0" [for]="'storeName' + i" class="font-medium">Store Name <span class="required"></span></label>
+                        <input [id]="'storeName' + i" pInputText type="text" formControlName="storeName" placeholder="Store Name..." class="w-full" />
+
+                        @if (storeForm.get('storeName')?.invalid && storeForm.get('storeName')?.touched) {
+                            <small class="p-error">Field is required.</small>
+                        }
+                    </div>
+
+                    <p-button type="button" icon="pi pi-trash" severity="danger" (onClick)="removeStore(i)" />
+                </div>
+
+                <div class="flex justify-start mt-2">
+                    <p-button icon="pi pi-plus" severity="info" type="button" (onClick)="addStore()" />
+                </div>
+            </p-fieldset>
+
+            <p-fieldset legend="Merchant" [toggleable]="true" class="mt-2" formArrayName="merchant">
+                <div *ngFor="let merchantForm of merchants.controls; let i = index" [formGroupName]="i" class="flex flex-wrap gap-4 items-end mb-4">
+                    <div class="flex flex-col grow basis-0 gap-2">
+                        <label *ngIf="i === 0" [for]="'merchantCode' + i" class="font-medium">Merchant Code <span class="required"></span></label>
+                        <input [id]="'merchantCode' + i" pInputText type="text" formControlName="merchantCode" placeholder="Merchant Code..." class="w-full" />
+
+                        @if (merchantForm.get('merchantCode')?.invalid && merchantForm.get('merchantCode')?.touched) {
+                            <small class="p-error">Field is required.</small>
+                        }
+                    </div>
+
+                    <div class="flex flex-col grow basis-0 gap-2">
+                        <label *ngIf="i === 0" [for]="'merchantName' + i" class="font-medium">Merchant Name <span class="required"></span></label>
+                        <input [id]="'merchantName' + i" pInputText type="text" formControlName="merchantName" placeholder="Merchant Name..." class="w-full" />
+
+                        @if (merchantForm.get('merchantName')?.invalid && merchantForm.get('merchantName')?.touched) {
+                            <small class="p-error">Field is required.</small>
+                        }
+                    </div>
+
+                    <p-button type="button" icon="pi pi-trash" severity="danger" (onClick)="removeMerchant(i)" />
+                </div>
+
+                <div class="flex justify-start mt-2">
+                    <p-button icon="pi pi-plus" severity="info" type="button" (onClick)="addMerchant()" />
+                </div>
+            </p-fieldset>
+        </div>
+    </div>
+</div>

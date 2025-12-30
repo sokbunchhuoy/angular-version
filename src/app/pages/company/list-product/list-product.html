@@ -14,15 +14,11 @@
     </ng-template>
 </p-toolbar>
 <div class="card">
-    <div class="list-progress" style="height: 3px">
-        @if (loading()) {
-            <p-progressBar mode="indeterminate" [style]="{'height': '3px'}"></p-progressBar>
-        }
-    </div>
     <p-table
         [value]="products()" [tableStyle]="{ 'min-width': '50rem' }"
         [paginator]="true"
         [rows]="rows"
+        [loading]="loading()"
         [rowsPerPageOptions]="rowsPerPageOptions">
 
         <ng-template pTemplate="header">
@@ -134,7 +130,7 @@
                                    currency="USD"
                                    locale="en-US"
                                    [min]="0"></p-inputNumber>
-                    @if (form.get('price')!.invalid && (form.get('price')!.dirty || form.get('price')!.touched)) {
+                    @if (form.get('price')?.invalid && (form.get('price')?.dirty || form.get('price')?.touched)) {
                         <small class="p-error">Price is required and must be at least 0.</small>
                     }
                 </div>

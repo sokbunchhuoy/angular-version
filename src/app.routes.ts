@@ -16,8 +16,12 @@ export const appRoutes: Routes = [
             { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') },
             {
                 path: 'company-post',
-                // Lowercase 'l' and 'c'
-                loadChildren: () => import('./app/pages/company/company-module').then(m => m.CompanyModule)
+                loadChildren: () =>
+                    import('./app/pages/company/company-module').then(m => m.CompanyModule)
+            },
+            {
+                path: 'terminal',
+                loadChildren: () => import('./app/pages/terminal/terminal-module').then(m => m.TerminalModule)
             }
         ]
     },

@@ -113,26 +113,6 @@
       "status": "INSTOCK",
       "merchant": "",
       "dStatus": 0
-    },
-    {
-      "id": "oPbR2",
-      "code": "CPIGD002",
-      "name": "IGD-CP-STG-001",
-      "price": 33,
-      "category": "Accessories",
-      "status": "LOWSTOCK",
-      "merchant": null,
-      "dStatus": 1
-    },
-    {
-      "id": "Uuelz",
-      "code": "CPIGD001",
-      "name": "IGD-LP-STG-02",
-      "price": 88,
-      "category": "Accessories",
-      "status": null,
-      "merchant": null,
-      "dStatus": 0
     }
   ],
   "merchant": [
@@ -145,6 +125,48 @@
       "id": "1",
       "merchantId": "9000981",
       "merchantName": "IG Merchant"
+    }
+  ],
+  "terminal": [
+    {
+      "name": "IGD-LP-STG-02",
+      "serialNumber": "12635353",
+      "model": "VIVO",
+      "type": "Android",
+      "status": true,
+      "store": [
+        {
+          "storeName": "Text Center",
+          "storeCode": "A15"
+        }
+      ],
+      "merchant": [
+        {
+          "merchantName": "Room Master",
+          "merchantCode": "M12"
+        }
+      ],
+      "id": "2a26"
+    },
+    {
+      "name": "Bath Towel ITLN Post",
+      "serialNumber": "12635353",
+      "model": "True ID",
+      "type": "Android",
+      "status": false,
+      "store": [
+        {
+          "storeName": "Text Center",
+          "storeCode": "T15"
+        }
+      ],
+      "merchant": [
+        {
+          "merchantName": "Room Master Post",
+          "merchantCode": "M12"
+        }
+      ],
+      "id": "28ac"
     }
   ]
 }
