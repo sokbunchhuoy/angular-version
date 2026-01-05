@@ -5,7 +5,7 @@ import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Toast } from 'primeng/toast';
 import { Toolbar } from 'primeng/toolbar';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { TerminalModel } from '@/pages/terminal/terminal.model';
 import { TerminalPostService } from '@/pages/terminal/terminal.serivce';
 import { ProgressBar } from 'primeng/progressbar';
@@ -40,8 +40,7 @@ export class List implements OnInit {
     constructor(
         private service: TerminalPostService,
         private confirmationService: ConfirmationService,
-        private messageService: MessageService,
-        private router: Router
+        private messageService: MessageService
     ) {
         // Initialize here, after the service is injected
         this.terminal = this.service.terminal;

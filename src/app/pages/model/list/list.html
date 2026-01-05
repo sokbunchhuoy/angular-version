@@ -1,0 +1,112 @@
+<p-confirmDialog key="delete"></p-confirmDialog>
+<p-toast></p-toast>
+
+<div class="card">
+    <div class="flex items-center justify-between mb-4">
+        <div class="font-semibold text-xl">Model</div>
+        <p-button label="Create New" icon="pi pi-plus" severity="primary" routerLink="/model/add" />
+    </div>
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="start">
+            <div class="flex flex-wrap gap-2 align-items-center">
+                <input pInputText [(ngModel)]="searchCode" placeholder="Code" class="w-8rem" (keyup.enter)="getList()" />
+
+                <input pInputText [(ngModel)]="searchName" placeholder="Name" class="w-12rem" (keyup.enter)="getList()" />
+                <p-button
+                    label="Search"
+                    icon="pi pi-search"
+                    [loading]="loading()"
+                    (click)="getList()"
+                    styleClass="p-button-primary" />
+
+                <p-button
+                    label="Clear"
+                    icon="pi pi-filter-slash"
+                    [disabled]="loading()"
+                    (click)="clearSearch()"
+                    styleClass="p-button-outlined p-button-secondary" />
+            </div>
+        </ng-template>
+    </p-toolbar>
+
+    <div class="list-progress" style="height: 3px">
+        @if (loading()) {
+            <p-progressBar mode="indeterminate" [style]="{'height': '3px'}"></p-progressBar>
+        }
+    </div>
+
+    <p-table
+        [value]="model()"
+        styleClass="p-datatable-gridlines p-datatable-sm"
+        [tableStyle]="{ 'min-width': '75rem' }"
+        [paginator]="true"
+        [rows]="10">
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 70px">Logo</th>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Product</th>
+                <th>Description</th>
+                <th style="width: 100px">Action</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-record>
+            <tr>
+                <td class="text-center">
+                    @if (record.logo) {
+                        <img [src]="record.logo"
+                             [alt]="record.name"
+                             class="w-8 h-8 rounded-full shadow-sm object-cover"
+                             style="width: 35px; height: 35px;" />
+                    } @else {
+                        <i class="pi pi-user text-gray-400 text-xl"></i>
+                    }
+                </td>
+                <td>{{ record.code }}</td>
+                <td>{{ record.name }}</td>
+                <td>
+                    @if (record.product) {
+                        <span>{{ record.product.code }} - {{ record.product.name }}</span>
+                    } @else {
+                        <span class="text-gray-400">-</span>
+                    }
+                </td>
+                <td>{{ record.description }}</td>
+                <td>
+                    <div class="flex">
+                        <p-button
+                            label="Detail"
+                            [routerLink]="['/model/detail', record.id]"
+                            styleClass="p-button-rounded p-button-text p-button-sm"
+                        ></p-button>
+                        <p-button
+                            label="Edit"
+                            [routerLink]="['/model/edit', record.id]"
+                            styleClass="p-button-rounded p-button-text p-button-sm"
+                        ></p-button>
+                        <p-button
+                            label="Delete"
+                            (onClick)="onDelete(record.id)"
+                            styleClass="p-button-rounded p-button-text p-button-sm p-button-danger"
+                        ></p-button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="8" class="text-center p-4">
+                    @if (loading()) {
+                        <span>Loading data...</span>
+                    } @else {
+                        <span>No record available.</span>
+                    }
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

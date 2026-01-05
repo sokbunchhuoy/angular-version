@@ -22,6 +22,18 @@ export const appRoutes: Routes = [
             {
                 path: 'terminal',
                 loadChildren: () => import('./app/pages/terminal/terminal-module').then(m => m.TerminalModule)
+            },
+            {
+                path: 'manufacturer',
+                loadChildren: () => import('./app/pages/manufacturer/manufacturer-module').then(m => m.ManufacturerModule)
+            },
+            {
+                path: 'product',
+                loadChildren: () => import('./app/pages/product/product-module').then(m => m.ProductModule)
+            },
+            {
+                path: 'model',
+                loadChildren: () => import('./app/pages/model/model-module').then(m => m.ModelModule)
             }
         ]
     },

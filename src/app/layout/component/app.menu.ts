@@ -38,6 +38,14 @@ export class AppMenu {
                 ]
             },
             {
+                label: 'Manufacturer',
+                items: [
+                    {label: 'Manufacturer', icon: 'pi pi-fw pi-clipboard', routerLink: ['/manufacturer/list'] },
+                    {label: 'Product', icon: 'pi pi-fw pi-book', routerLink: ['/product/list'] },
+                    {label: 'Model', icon: 'pi pi-fw pi-bullseye', routerLink: ['/model/list'] }
+                ]
+            },
+            {
                 label: 'UI Components',
                 items: [
                     { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },

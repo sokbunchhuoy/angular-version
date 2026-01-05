@@ -46,7 +46,18 @@ interface expandedRows {
         IconFieldModule
     ],
     template: ` <div class="card">
-            <div class="font-semibold text-xl mb-4">Filtering</div>
+        <div class="flex items-center justify-between mb-4">
+            <div class="font-semibold text-xl">Filtering</div>
+
+            <button
+                pButton
+                type="button"
+                label="Create New"
+                icon="pi pi-plus"
+                class="p-button-sm"
+
+            ></button>
+        </div>
             <p-table
                 #dt1
                 [value]="customers1"

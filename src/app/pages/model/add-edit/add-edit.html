@@ -1,0 +1,127 @@
+
+<p-toast></p-toast>
+<div class="flex flex-col gap-8 w-full" [formGroup]="form">
+    <div class="w-full">
+        <div class="card flex flex-col gap-4">
+            <div class="flex justify-between items-center mb-2">
+                <div class="font-semibold text-xl">Model</div>
+                <div class="flex gap-2">
+                    <p-button label="Back to list" icon="pi pi-arrow-left" routerLink="/model/list" severity="secondary"></p-button>
+                    <p-button label="Save" icon="pi pi-save" (onClick)="onSave()" [loading]="saving()"></p-button>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-8">
+
+                <div class="flex flex-col gap-4 flex-1">
+                    <div class="flex flex-col gap-2">
+                        <label for="product" class="block font-semibold mb-2">Product <span class="required"></span></label>
+                        <p-select
+                            id="product"
+                            [options]="products()"
+                            formControlName="productId"
+                            optionLabel="name"
+                            optionValue="id"
+                            placeholder="Select a Product"
+                            [filter]="true"
+                            filterBy="name"
+                            class="w-full"
+                            appendTo="body">
+
+                            <ng-template pTemplate="selectedItem" let-selectedOption>
+                                @if (selectedOption) {
+                                    <div>{{ selectedOption.code }} - {{ selectedOption.name }}</div>
+                                }
+                            </ng-template>
+
+                            <ng-template let-product pTemplate="item">
+                                <div>{{ product.code }} - {{ product.name }}</div>
+                            </ng-template>
+                        </p-select>
+                        @if (form.get('productId')?.invalid && form.get('productId')?.touched) {
+                            <small class="p-error">Field is required.</small>
+                        }
+                    </div>
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="flex-1">
+                            <label for="major" class="block font-semibold mb-2">Major <span class="required"></span></label>
+                            <p-select
+                                id="major"
+                                [options]="majorOptions"
+                                formControlName="major"
+                                placeholder="0-25"
+                                class="w-full">
+                            </p-select>
+                            @if (form.get('major')?.invalid && form.get('major')?.touched) {
+                                <small class="p-error">Field is required.</small>
+                            }
+                        </div>
+
+                        <div class="flex-1">
+                            <label for="minor" class="block font-semibold mb-2">Minor <span class="required"></span></label>
+                            <p-select
+                                id="minor"
+                                [options]="minorOptions()"
+                                formControlName="minor"
+                                placeholder="0-9"
+                                class="w-full">
+                            </p-select>
+                            @if (form.get('minor')?.invalid && form.get('minor')?.touched) {
+                                <small class="p-error">Field is required.</small>
+                            }
+                        </div>
+
+                        <div class="flex-1">
+                            <label for="code" class="block font-semibold mb-2">Code</label>
+                            <input
+                                pInputText
+                                id="code"
+                                formControlName="code"
+                                class="w-full bg-gray-100"
+                                readonly
+                                placeholder="Hex result..." />
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label for="name" class="font-medium">Name <span class="required"></span></label>
+                        <input pInputText id="name" type="text" placeholder="Name..." formControlName="name" class="w-full" />
+                        @if (form.get('name')?.invalid && form.get('name')?.touched) {
+                            <small class="p-error">Field is required.</small>
+                        }
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label for="description" class="font-medium">Description</label>
+                        <textarea pInputTextarea id="description" rows="4" placeholder="Additional details..." formControlName="description" class="w-full"></textarea>
+                    </div>
+                </div>
+
+                <div class="w-full md:w-5/12 lg:w-4/12">
+                    <p-fieldset legend="Image">
+                        <div class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-4 bg-gray-50 min-h-[200px]">
+
+                            @if (imagePreview()) {
+                                <img [src]="imagePreview()" class="max-h-40 rounded mb-4" alt="Manufacturer Logo preview">
+                            } @else {
+                                <i class="pi pi-image text-5xl text-gray-400 mb-4"></i>
+                            }
+
+                            <input #fileInput type="file" (change)="onFileSelect($event)" accept="image/png, image/jpeg, image/jpg" style="display: none;">
+
+                            <p-button
+                                label="Choose File"
+                                severity="secondary"
+                                styleClass="p-button-sm mb-2"
+                                icon="pi pi-upload"
+                                (onClick)="fileInput.click()">
+                            </p-button>
+
+                            <span class="text-gray-500 text-xs text-center">Browse logo image here (png, jpg, jpeg)</span>
+                        </div>
+                    </p-fieldset>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
