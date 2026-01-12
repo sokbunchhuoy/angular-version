@@ -3,8 +3,8 @@
 
 <div class="card">
     <div class="flex items-center justify-between mb-4">
-        <div class="font-semibold text-xl">Manufacturer</div>
-        <p-button label="Create New" icon="pi pi-plus" severity="primary" routerLink="/manufacturer/add" />
+        <div class="font-semibold text-xl">Company Management</div>
+        <p-button label="Create New" icon="pi pi-plus" severity="primary" routerLink="/company-management/add" />
     </div>
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="start">
@@ -26,7 +26,7 @@
 
                 <p-button
                     label="Clear"
-                    icon="pi pi-filter-slash"
+                    icon="pi pi-refresh"
                     [disabled]="loading()"
                     (click)="clearSearch()"
                     styleClass="p-button-outlined p-button-secondary" />
@@ -41,7 +41,7 @@
     </div>
 
     <p-table
-        [value]="manufacturers()"
+        [value]="company()"
         styleClass="p-datatable-gridlines p-datatable-sm"
         [tableStyle]="{ 'min-width': '75rem' }"
         [paginator]="true"
@@ -55,6 +55,7 @@
                 <th>Contact Name</th>
                 <th>Phone</th>
                 <th>Email</th>
+                <th>Register Date</th>
                 <th style="width: 100px">Action</th>
             </tr>
         </ng-template>
@@ -76,16 +77,17 @@
                 <td>{{ record.contactName }}</td>
                 <td>{{ record.phone }}</td>
                 <td>{{ record.email }}</td>
+                <td>{{ record.registerDate | date: 'dd/MM/yyyy' : 'UTC'}}</td>
                 <td>
                     <div class="flex">
                         <p-button
                             label="Detail"
-                            [routerLink]="['/manufacturer/detail', record.id]"
+                            [routerLink]="['/company-management/detail', record.id]"
                             styleClass="p-button-rounded p-button-text p-button-sm p-button-info"
                         ></p-button>
                         <p-button
                             label="Edit"
-                            [routerLink]="['/manufacturer/edit', record.id]"
+                            [routerLink]="['/company-management/edit', record.id]"
                             styleClass="p-button-rounded p-button-text p-button-sm"
                         ></p-button>
                         <p-button

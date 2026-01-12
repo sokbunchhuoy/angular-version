@@ -4,9 +4,9 @@
     <div class="w-full">
         <div class="card flex flex-col gap-4">
             <div class="flex justify-between items-center mb-2">
-                <div class="font-semibold text-xl">Manufacturer</div>
+                <div class="font-semibold text-xl">Company Management</div>
                 <div class="flex gap-2">
-                    <p-button label="Back to list" icon="pi pi-arrow-left" routerLink="/manufacturer/list" severity="secondary"></p-button>
+                    <p-button label="Back to list" icon="pi pi-arrow-left" routerLink="/company-management/list" severity="secondary"></p-button>
                     <p-button label="Save" icon="pi pi-save" (onClick)="onSave()" [loading]="saving()"></p-button>
                 </div>
             </div>
@@ -16,7 +16,7 @@
                 <div class="flex flex-col gap-4 flex-1">
                     <div class="flex flex-col gap-2">
                         <label for="code" class="font-medium">Code <span class="required"></span></label>
-                        <input pInputText id="code" placeholder="Manufacturer Code..." type="text" formControlName="code" class="w-full" />
+                        <input pInputText id="code" placeholder="Company Code..." type="text" formControlName="code" class="w-full" />
                         @if (form.get('code')?.invalid && form.get('code')?.touched) {
                             <small class="p-error">Field is required.</small>
                         }
@@ -24,12 +24,17 @@
 
                     <div class="flex flex-col gap-2">
                         <label for="name" class="font-medium">Name <span class="required"></span></label>
-                        <input pInputText id="name" type="text" placeholder="Manufacturer Name..." formControlName="name" class="w-full" />
+                        <input pInputText id="name" type="text" placeholder="Company Name..." formControlName="name" class="w-full" />
                         @if (form.get('name')?.invalid && form.get('name')?.touched) {
                             <small class="p-error">Field is required.</small>
                         }
                     </div>
-
+                    <div class="flex flex-col gap-2">
+                        <label class="font-medium">Register Date <span class="required"></span></label>
+                        <p-floatlabel>
+                            <p-datepicker dateFormat="dd/mm/yy" [showIcon]="true" [showButtonBar]="true" formControlName="registerDate" class="w-full" ></p-datepicker>
+                        </p-floatlabel>
+                    </div>
                     <div class="flex flex-col gap-2">
                         <label for="phone" class="font-medium">Phone</label>
                         <input pInputText id="phone" type="text" placeholder="Phone Number..." formControlName="phone" class="w-full" />

@@ -1,0 +1,140 @@
+
+<p-toast></p-toast>
+<div class="flex flex-col gap-8 w-full" [formGroup]="form">
+    <div class="w-full">
+        <div class="card flex flex-col gap-4">
+            <div class="flex justify-between items-center mb-2">
+                <div class="font-semibold text-xl">Generate MSN</div>
+                <div class="flex gap-2">
+                    <p-button label="Back to list" icon="pi pi-arrow-left" routerLink="/msn-management/list" severity="secondary"></p-button>
+                    <p-button label="Save" icon="pi pi-save" (onClick)="onSave()" [loading]="saving()"></p-button>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-4">
+
+                <div class="flex flex-col gap-4 flex-1">
+                    <div class="flex flex-col gap-2">
+                        <label for="manufacturer" class="block font-semibold mb-2">Manufacturer <span class="required"></span></label>
+                        <p-select
+                            id="manufacturer"
+                            [options]="manufacturer()"
+                            formControlName="manufacturerId"
+                            optionLabel="name"
+                            optionValue="id"
+                            placeholder="Select a Manufacturer"
+                            [filter]="true"
+                            filterBy="name"
+                            class="w-full"
+                            appendTo="body">
+
+                            <ng-template pTemplate="selectedItem" let-selectedOption>
+                                @if (selectedOption) {
+                                    <div>{{ selectedOption.code }} - {{ selectedOption.name }}</div>
+                                }
+                            </ng-template>
+
+                            <ng-template let-manufacturer pTemplate="item">
+                                <div>{{ manufacturer.code }} - {{ manufacturer.name }}</div>
+                            </ng-template>
+                        </p-select>
+                        @if (form.get('manufacturerId')?.invalid && form.get('manufacturerId')?.touched) {
+                            <small class="p-error">Field is required.</small>
+                        }
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label for="product" class="block font-semibold mb-2">Product <span class="required"></span></label>
+                        <p-select
+                            id="product"
+                            [options]="products()"
+                            formControlName="productId"
+                            optionLabel="name"
+                            optionValue="id"
+                            placeholder="Select a Product"
+                            [filter]="true"
+                            filterBy="name"
+                            class="w-full"
+                            (onChange)="onProductChange($event.value)"
+                            appendTo="body">
+
+                            <ng-template pTemplate="selectedItem" let-selectedOption>
+                                @if (selectedOption) {
+                                    <div>{{ selectedOption.code }} - {{ selectedOption.name }}</div>
+                                }
+                            </ng-template>
+
+                            <ng-template let-product pTemplate="item">
+                                <div>{{ product.code }} - {{ product.name }}</div>
+                            </ng-template>
+                        </p-select>
+                        @if (form.get('productId')?.invalid && form.get('productId')?.touched) {
+                            <small class="p-error">Field is required.</small>
+                        }
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label for="model" class="block font-semibold mb-2">Model <span class="required"></span></label>
+                        <p-select
+                            id="model"
+                            [options]="model()"
+                            formControlName="modelId"
+                            optionLabel="name"
+                            optionValue="id"
+                            [disabled]="model().length === 0"
+                            placeholder="Select a Model"
+                            [filter]="true"
+                            filterBy="name"
+                            class="w-full"
+                            appendTo="body">
+
+                            <ng-template pTemplate="selectedItem" let-selectedOption>
+                                @if (selectedOption) {
+                                    <div>{{ selectedOption.code }} - {{ selectedOption.name }}</div>
+                                }
+                            </ng-template>
+
+                            <ng-template let-model pTemplate="item">
+                                <div>{{ model.code }} - {{ model.name }}</div>
+                            </ng-template>
+                        </p-select>
+                        @if (form.get('modelId')?.invalid && form.get('modelId')?.touched) {
+                            <small class="p-error">Field is required.</small>
+                        }
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label for="batch" class="font-medium">Batch No <span class="required"></span></label>
+                        <input pInputText id="batch" maxlength="2" placeholder="Enter Hex Code (00-FF)"
+                               (input)="onHexInput($event)"
+                               type="text" formControlName="batchNo" class="w-full" />
+                        @if (form.get('batchNo')?.invalid && form.get('batchNo')?.touched) {
+                            <small class="p-error">Field is required.</small>
+                        }
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label for="qty" class="font-medium">QTY of MSN<span class="required"></span></label>
+                        <input pInputText id="qty" type="text" placeholder="Qty..." formControlName="qty" class="w-full" />
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label for="code" class="font-medium">Code <span class="required"></span></label>
+                        <input pInputText id="code" type="text" placeholder="Code..." formControlName="code" class="w-full" />
+                        @if (form.get('code')?.invalid && form.get('code')?.touched) {
+                            <small class="p-error">Field is required.</small>
+                        }
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="font-medium">Generate Date <span class="required"></span></label>
+                        <p-datepicker dateFormat="dd/mm/yy" [showIcon]="true" [showButtonBar]="true" formControlName="generateDate" class="w-full" ></p-datepicker>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label for="description" class="font-medium">Description</label>
+                        <textarea pInputTextarea id="description" rows="4" placeholder="Additional details..." formControlName="description" class="w-full"></textarea>
+                    </div>
+                </div>
+
+                <div class="w-full md:w-5/12 lg:w-4/12">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,118 @@
+
+<p-toast></p-toast>
+<div class="flex flex-col gap-8 w-full" [formGroup]="form">
+    <div class="w-full">
+        <div class="card flex flex-col gap-4">
+            <div class="flex justify-between items-center mb-2">
+                <div class="font-semibold text-xl">Device Management</div>
+                <div class="flex gap-2">
+                    <p-button label="Back to list" icon="pi pi-arrow-left" routerLink="/device-management/list" severity="secondary"></p-button>
+                    <p-button label="Save" icon="pi pi-save" (onClick)="onSave()" [loading]="saving()"></p-button>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-4">
+
+                <div class="flex flex-col gap-4 flex-1">
+                    <div class="flex flex-col gap-2">
+                        <label for="company" class="block font-semibold mb-2">Company <span class="required"></span></label>
+                        <p-select
+                            id="company"
+                            [options]="company()"
+                            formControlName="companyId"
+                            optionLabel="name"
+                            optionValue="id"
+                            placeholder="Select a company"
+                            [filter]="true"
+                            filterBy="name"
+                            class="w-full"
+                            appendTo="body">
+
+                            <ng-template pTemplate="selectedItem" let-selectedOption>
+                                @if (selectedOption) {
+                                    <div>{{ selectedOption.code }} - {{ selectedOption.name }}</div>
+                                }
+                            </ng-template>
+
+                            <ng-template let-company pTemplate="item">
+                                <div>{{ company.code }} - {{ company.name }}</div>
+                            </ng-template>
+                        </p-select>
+                        @if (form.get('companyId')?.invalid && form.get('companyId')?.touched) {
+                            <small class="p-error">Field is required.</small>
+                        }
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label class="font-medium">Onboard Date <span class="required"></span></label>
+                        <p-datepicker dateFormat="dd/mm/yy" [showIcon]="true" [showButtonBar]="true" formControlName="onboardDate" class="w-full" ></p-datepicker>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="font-medium">Status</label>
+                        <p-selectButton
+                            [options]="statusOptions"
+                            formControlName="status"
+                            optionLabel="label"
+                            optionValue="value"
+                            styleClass="status-select-button">
+
+                            <ng-template let-item pTemplate="item">
+                                <span [ngClass]="{
+                                    'text-green-600 font-bold': item.value === 'Onboarded',
+                                    'text-yellow-600 font-bold': item.value === 'Pending'
+                                                    }">
+                                    {{ item.label }}
+                                </span>
+                            </ng-template>
+                        </p-selectButton>
+                    </div>
+                    <div class="mt">
+                        <div class="flex gap-4 mb-2 pr-12"> <div class="flex-1">
+                            <label class="block text-sm font-semibold">MSN <span class="required"></span></label>
+                        </div>
+                            <div class="flex-1">
+                                <label class="block text-sm font-semibold">Sim Phone Number</label>
+                            </div>
+                        </div>
+
+                        <div formArrayName="msnMapping" class="flex flex-col gap-4">
+                            @for (item of msnMapping.controls; track item; let i = $index) {
+                                <div [formGroupName]="i" class="flex gap-4 items-center">
+                                    <div class="flex-1">
+                                        <input pInputText formControlName="msn" placeholder="MSN..." class="w-full" />
+                                        @if (msnMapping.at(i).get('msn')?.invalid && msnMapping.at(i).get('msn')?.touched) {
+                                            <small class="p-error">MSN is required.</small>
+                                        }
+                                    </div>
+                                    <div class="flex-1">
+                                        <input pInputText formControlName="simPhone" placeholder="Phone..." class="w-full" />
+                                    </div>
+
+                                    <p-button
+                                        icon="pi pi-minus"
+                                        severity="warn"
+                                        (onClick)="removeMsnRow(i)"
+                                        [disabled]="msnMapping.length === 1">
+                                    </p-button>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="mt-4">
+                            <p-button
+                                icon="pi pi-plus"
+                                severity="help"
+                                (onClick)="addMsnRow()">
+                            </p-button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full md:w-5/12 lg:w-4/12">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

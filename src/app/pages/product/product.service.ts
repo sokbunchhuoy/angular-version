@@ -13,7 +13,7 @@ export class ProductService {
     private apiUrl = 'http://localhost:3000/productes';
 
     // GET: Fetch list with optional search filters
-    getProduct(filters?: any): Observable<Manufacturer[]> {
+    getProduct(filters?: any): Observable<Product[]> {
         let params = new HttpParams();
 
         if (filters) {

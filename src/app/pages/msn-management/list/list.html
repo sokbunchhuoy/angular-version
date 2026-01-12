@@ -3,25 +3,19 @@
 
 <div class="card">
     <div class="flex items-center justify-between mb-4">
-        <div class="font-semibold text-xl">Manufacturer</div>
-        <p-button label="Create New" icon="pi pi-plus" severity="primary" routerLink="/manufacturer/add" />
+        <div class="font-semibold text-xl">MSN Management</div>
+        <p-button label="Create New" icon="pi pi-plus" severity="primary" routerLink="/msn-management/add" />
     </div>
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="start">
             <div class="flex flex-wrap gap-2 align-items-center">
-                <input pInputText [(ngModel)]="searchCode" placeholder="Code" class="w-8rem" (keyup.enter)="loadData()" />
-
-                <input pInputText [(ngModel)]="searchName" placeholder="Name" class="w-12rem" (keyup.enter)="loadData()" />
-
-                <input pInputText [(ngModel)]="searchPhone" placeholder="Phone" class="w-10rem" (keyup.enter)="loadData()" />
-
-                <input pInputText [(ngModel)]="searchEmail" placeholder="Email" class="w-15rem" (keyup.enter)="loadData()" />
-
+                <input pInputText [(ngModel)]="searchCode" placeholder="Code" class="w-8rem"
+                       (keyup.enter)="getList()" />
                 <p-button
                     label="Search"
                     icon="pi pi-search"
                     [loading]="loading()"
-                    (click)="loadData()"
+                    (click)="getList()"
                     styleClass="p-button-primary" />
 
                 <p-button
@@ -41,7 +35,7 @@
     </div>
 
     <p-table
-        [value]="manufacturers()"
+        [value]="msnManagement()"
         styleClass="p-datatable-gridlines p-datatable-sm"
         [tableStyle]="{ 'min-width': '75rem' }"
         [paginator]="true"
@@ -49,43 +43,54 @@
 
         <ng-template pTemplate="header">
             <tr>
-                <th style="width: 70px">Logo</th>
                 <th>Code</th>
-                <th>Name</th>
-                <th>Contact Name</th>
-                <th>Phone</th>
-                <th>Email</th>
+                <th>Generate Date</th>
+                <th>Manufacture</th>
+                <th>Product</th>
+                <th>Model</th>
+                <th>Batch</th>
+                <th>QTY</th>
+                <th>Mapped QTY</th>
                 <th style="width: 100px">Action</th>
             </tr>
         </ng-template>
 
         <ng-template pTemplate="body" let-record>
             <tr>
-                <td class="text-center">
-                    @if (record.logo) {
-                        <img [src]="record.logo"
-                             [alt]="record.name"
-                             class="w-8 h-8 rounded-full shadow-sm object-cover"
-                             style="width: 35px; height: 35px;" />
-                    } @else {
-                        <i class="pi pi-user text-gray-400 text-xl"></i>
+                <td>{{ record.code }}</td>
+                <td>{{ record.generateDate | date: 'dd/MM/yyyy' : 'UTC' }}</td>
+                <td>
+                    @if (record.manufacturer || record.manufacture) {
+                        <span class="text-blue-600 underline">
+                         {{ record.manufacturer?.code || record.manufacture?.code }} -
+                                        {{ record.manufacturer?.name || record.manufacture?.name }}
+                        </span>
                     }
                 </td>
-                <td>{{ record.code }}</td>
-                <td>{{ record.name }}</td>
-                <td>{{ record.contactName }}</td>
-                <td>{{ record.phone }}</td>
-                <td>{{ record.email }}</td>
+                <td>
+                    @if (record.product) {
+                        <span class="text-blue-600 underline">{{ record.product.code }}
+                            - {{ record.product.name }}</span>
+                    }
+                </td>
+                <td>
+                    @if (record.model) {
+                        <span class="text-blue-600 underline">{{ record.model.code }} - {{ record.model.name }}</span>
+                    }
+                </td>
+                <td>{{ record.batchNo }}</td>
+                <td>{{ record.qty }}</td>
+                <td>{{ record.mappedQty }}</td>
                 <td>
                     <div class="flex">
                         <p-button
                             label="Detail"
-                            [routerLink]="['/manufacturer/detail', record.id]"
+                            [routerLink]="['/msn-management/detail', record.id]"
                             styleClass="p-button-rounded p-button-text p-button-sm p-button-info"
                         ></p-button>
                         <p-button
                             label="Edit"
-                            [routerLink]="['/manufacturer/edit', record.id]"
+                            [routerLink]="['/msn-management/edit', record.id]"
                             styleClass="p-button-rounded p-button-text p-button-sm"
                         ></p-button>
                         <p-button
@@ -100,7 +105,7 @@
 
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="8" class="text-center p-4">
+                <td colspan="10" class="text-center p-4">
                     @if (loading()) {
                         <span>Loading data...</span>
                     } @else {

@@ -15,11 +15,6 @@ export const appRoutes: Routes = [
             { path: 'documentation', component: Documentation },
             { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') },
             {
-                path: 'company-post',
-                loadChildren: () =>
-                    import('./app/pages/company/company-module').then(m => m.CompanyModule)
-            },
-            {
                 path: 'terminal',
                 loadChildren: () => import('./app/pages/terminal/terminal-module').then(m => m.TerminalModule)
             },
@@ -34,6 +29,22 @@ export const appRoutes: Routes = [
             {
                 path: 'model',
                 loadChildren: () => import('./app/pages/model/model-module').then(m => m.ModelModule)
+            },
+            {
+                path: 'msn-management',
+                loadChildren: () => import('./app/pages/msn-management/msn-management-module').then(m => m.MsnManagementModule)
+            },
+            {
+                path: 'company-management',
+                loadChildren: () => import('./app/pages/company-management/company-management-module').then(m => m.CompanyManagementModule)
+            },
+            {
+                path: 'mobile-reward',
+                loadChildren: () => import('./app/pages/mobile-reward/mobile-reward-routing-module').then(m => m.MobileRewardRoutingModule)
+            },
+            {
+                path: 'device-management',
+                loadChildren: () => import('./app/pages/device-management/device-management-routing-module').then(m => m.DeviceManagementRoutingModule)
             }
         ]
     },

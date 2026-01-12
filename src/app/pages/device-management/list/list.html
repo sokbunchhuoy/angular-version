@@ -3,8 +3,8 @@
 
 <div class="card">
     <div class="flex items-center justify-between mb-4">
-        <div class="font-semibold text-xl">Manufacturer</div>
-        <p-button label="Create New" icon="pi pi-plus" severity="primary" routerLink="/manufacturer/add" />
+        <div class="font-semibold text-xl">Device Management</div>
+        <p-button label="Create New" icon="pi pi-plus" severity="primary" routerLink="/device-management/add" />
     </div>
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="start">
@@ -41,7 +41,7 @@
     </div>
 
     <p-table
-        [value]="manufacturers()"
+        [value]="device()"
         styleClass="p-datatable-gridlines p-datatable-sm"
         [tableStyle]="{ 'min-width': '75rem' }"
         [paginator]="true"
@@ -49,43 +49,51 @@
 
         <ng-template pTemplate="header">
             <tr>
-                <th style="width: 70px">Logo</th>
-                <th>Code</th>
-                <th>Name</th>
-                <th>Contact Name</th>
-                <th>Phone</th>
-                <th>Email</th>
+                <th>MSN</th>
+                <th>Company</th>
+                <th>Status</th>
+                <th>Onboard Date</th>
                 <th style="width: 100px">Action</th>
             </tr>
         </ng-template>
 
         <ng-template pTemplate="body" let-record>
             <tr>
-                <td class="text-center">
-                    @if (record.logo) {
-                        <img [src]="record.logo"
-                             [alt]="record.name"
-                             class="w-8 h-8 rounded-full shadow-sm object-cover"
-                             style="width: 35px; height: 35px;" />
+                <td>
+                    @if (record.msnMapping && record.msnMapping.length > 0) {
+                        {{ record.msnMapping[0].msn }}
+                        @if (record.msnMapping.length > 1) {
+                            <span class="text-gray-500 text-xs">(+{{ record.msnMapping.length - 1 }} more)</span>
+                        }
                     } @else {
-                        <i class="pi pi-user text-gray-400 text-xl"></i>
+                        {{ record.msn }} }
+                </td>
+
+                <td>
+                    @if (record.company) {
+                        <span class="text-blue-600 underline">
+                            {{ record.company.code }} - {{ record.company.name }}
+                        </span>
+                    } @else {
+                        <span class="text-gray-400">Not Assigned (-)</span>
                     }
                 </td>
-                <td>{{ record.code }}</td>
-                <td>{{ record.name }}</td>
-                <td>{{ record.contactName }}</td>
-                <td>{{ record.phone }}</td>
-                <td>{{ record.email }}</td>
+                <td>
+                    <span [class]="'px-2 py-1 rounded text-sm font-medium ' + getStatusClass(record.status)">
+                        {{ record.status }}
+                    </span>
+                </td>
+                <td>{{ record.onboardDate | date: 'dd/MM/yyyy' : 'UTC'}}</td>
                 <td>
                     <div class="flex">
                         <p-button
                             label="Detail"
-                            [routerLink]="['/manufacturer/detail', record.id]"
+                            [routerLink]="['/device-management/detail', record.id]"
                             styleClass="p-button-rounded p-button-text p-button-sm p-button-info"
                         ></p-button>
                         <p-button
                             label="Edit"
-                            [routerLink]="['/manufacturer/edit', record.id]"
+                            [routerLink]="['/device-management/edit', record.id]"
                             styleClass="p-button-rounded p-button-text p-button-sm"
                         ></p-button>
                         <p-button
